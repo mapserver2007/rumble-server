@@ -12,7 +12,6 @@ class Bootstrap
         require rb
       end
     end
-    Conf.conf
   end
 end
 
