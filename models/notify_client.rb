@@ -14,12 +14,15 @@ class NotifyClient
     @host = uri.host
     @path = uri.path
 
-    imgUrl = $1 if /https?://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+/ =~ message
-
-    p imgUrl
+    request_body = {'message' => message}
+    uri = URI.regexp.match(message)
+    unless uri.nil?
+      request_body['imageThumbnail'] = uri[0]
+      request_body['imageFullsize'] = uri[0]
+    end
 
     request = Net::HTTP::Post.new(@path)
-    request.set_form_data({'message' => message})
+    request.set_form_data(request_body)
     request.add_field 'Authorization', "Bearer #{token}"
 
     res = https_start do |https|
