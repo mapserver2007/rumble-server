@@ -19,10 +19,8 @@ class NotifyClient
     unless uri.nil?
       request_body['imageThumbnail'] = uri[0]
       request_body['imageFullsize'] = uri[0]
+      request_body['message'] = uri[0]
     end
-
-    require 'pp'
-    pp request_body
 
     request = Net::HTTP::Post.new(@path)
     request.set_form_data(request_body)
