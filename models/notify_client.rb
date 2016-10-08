@@ -21,6 +21,9 @@ class NotifyClient
       request_body['imageFullsize'] = uri[0]
     end
 
+    require 'pp'
+    pp request_body
+
     request = Net::HTTP::Post.new(@path)
     request.set_form_data(request_body)
     request.add_field 'Authorization', "Bearer #{token}"
