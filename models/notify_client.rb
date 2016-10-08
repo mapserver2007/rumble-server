@@ -14,6 +14,10 @@ class NotifyClient
     @host = uri.host
     @path = uri.path
 
+    imgUrl = $1 if /https?://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+/ =~ message
+
+    p imgUrl
+
     request = Net::HTTP::Post.new(@path)
     request.set_form_data({'message' => message})
     request.add_field 'Authorization', "Bearer #{token}"
