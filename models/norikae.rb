@@ -8,6 +8,10 @@ class Norikae
     @type = {
       :cway => 0, :trainType => "乗り換え"
     }
+
+    Logger.info shihatu
+    Logger.info shuden
+
     if !shihatu.nil?
       @type[:cway] = 2 # 始発
       @type[:trainType] = shihatu
