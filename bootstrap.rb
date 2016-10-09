@@ -12,20 +12,21 @@ class Bootstrap
         require rb
       end
     end
+    Config.init(File.dirname(__FILE__) + '/config/config.yml')
   end
 end
 
-class Conf
+class Config
+  def self.init(filepath)
+    self.file = filepath
+  end
+
   def self.[](key)
-    ENV[key] || conf[key]
+    conf[key]
   end
 
   def self.[]=(key,value)
     conf[key] = value
-  end
-
-  def self.file
-    @@file ||= File.dirname(__FILE__)+'/config/config.yml'
   end
 
   def self.file=(name)
@@ -34,7 +35,11 @@ class Conf
 
   def self.conf
     begin
-      @@conf ||= YAML::load self.open.read
+      if File.exists? @@file
+        @@conf ||= YAML::load self.open.read
+      else
+        @@conf = ENV
+      end
     rescue => e
       STDERR.puts e
       STDERR.puts "config.yml load error!!"
@@ -44,9 +49,9 @@ class Conf
 
   def self.open(opt=nil, &block)
     if block_given?
-      yield File.open(self.file, opt)
+      yield File.open(@@file, opt)
     else
-      return File.open(self.file, opt)
+      return File.open(@@file, opt)
     end
   end
 
