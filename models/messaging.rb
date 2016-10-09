@@ -25,6 +25,10 @@ class Messaging
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
+
+          norikae = Norikae.new
+          norikae.search(@message)
+
           message = {
             type: 'text',
             text: event.message['text']
@@ -33,7 +37,8 @@ class Messaging
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           # Nothing to do
         when Line::Bot::Event::MessageType::Location
-          p "test"
+          # Yet implement ...
+          # 位置情報から、「何を探しましょう？」的な会話を実装したい
         end
       end
     end
