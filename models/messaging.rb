@@ -3,11 +3,14 @@ require 'line/bot'
 
 class Messaging
   def initialize(signature)
-    @client ||= Line::Bot::Client.new { |config|
+    @signature = signature
+  end
+
+  def client
+    Line::Bot::Client.new { |config|
       config.channel_secret = Config["LINE_CHANNEL_SECRET"]
       config.channel_token = Config["LINE_CHANNEL_TOKEN"]
     }
-    @signature = signature
   end
 
   def body=(message)
@@ -20,10 +23,9 @@ class Messaging
       from, to, shihatu, shuden = $1, $2, $3, $4
       norikae = Norikae.new(from, to, shihatu, shuden)
       message = norikae.before_search
-      @client.reply_message(token, {type: 'text', text: message}) unless message.nil?
-      sleep 5
+      client.reply_message(token, {type: 'text', text: message}) unless message.nil?
       message = norikae.search
-      @client.reply_message(token, {type: 'text', text: message}) unless message.nil?
+      client.reply_message(token, {type: 'text', text: message}) unless message.nil?
     end
   end
 
