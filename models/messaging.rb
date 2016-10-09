@@ -20,14 +20,9 @@ class Messaging
       from, to, shihatu, shuden = $1, $2, $3, $4
       norikae = Norikae.new(from, to, shihatu, shuden)
       message = norikae.before_search
-      Logger.info message
-      @client.reply_message(token, message) unless message.nil?
+      @client.reply_message(token, {type: text, text: message}) unless message.nil?
       message = norikae.search
-      Logger.info message
-      @client.reply_message(token, {
-        type: 'text',
-        text: norikae.search
-      }) unless message.nil?
+      @client.reply_message(token, {type: 'text', text: message}) unless message.nil?
     end
   end
 
