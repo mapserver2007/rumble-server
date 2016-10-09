@@ -15,6 +15,7 @@ GEM
     i18n (0.7.0)
     json (2.0.2)
     line-bot-api (1.0.0)
+    log4r (1.1.10)
     minitest (5.9.1)
     multi_json (1.12.1)
     rack (1.6.4)
@@ -51,6 +52,7 @@ DEPENDENCIES
   foreman
   json
   line-bot-api
+  log4r
   rack
   sinatra
   sinatra-contrib

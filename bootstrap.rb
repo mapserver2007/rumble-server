@@ -1,4 +1,5 @@
 require 'yaml'
+require 'log4r'
 
 class Bootstrap
   def self.default
@@ -13,6 +14,25 @@ class Bootstrap
       end
     end
     Config.init(File.dirname(__FILE__) + '/config/config.yml')
+    Logger.init
+  end
+end
+
+class Logger
+  def self.init
+    @@logger = Log4r::Logger.new("rumble-server")
+    @@logger.level = 2 # INFO
+    @@logger.outputters = []
+    @@logger.outputters << Log4r::StdoutOutputter.new('console', {
+      :formatter => Log4r::PatternFormatter.new(
+        :pattern => "[%l] %d: %M",
+        :date_format => "%Y/%m/%d %H:%M:%Sm"
+      )
+    })
+  end
+
+  def self.method_missing(name, args)
+    @@logger.send(name, args)
   end
 end
 

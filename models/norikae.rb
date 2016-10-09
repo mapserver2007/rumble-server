@@ -12,7 +12,7 @@ class Norikae
       cway = 0
       trainType = "乗り換え"
       puts "---"
-      puts message.force_encoding("UTF-8")
+      Logger.info message.force_encoding("UTF-8")
     end
 
   end
