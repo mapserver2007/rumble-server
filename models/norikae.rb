@@ -10,10 +10,10 @@ class Norikae
     }
     if !shihatu.nil?
       @type[:cway] = 2 # 始発
-      @type[:trainType] = $3
+      @type[:trainType] = shihatu
     elsif !shuden.nil?
       @type[:cway] = 3 # 終電
-      @type[:trainType] = $4
+      @type[:trainType] = shuden
     end
   end
 

@@ -21,7 +21,6 @@ class Messaging
       norikae = Norikae.new(from, to, shihatu, shuden)
       message = norikae.before_search
       @client.reply_message(token, message) unless message.nil?
-      sleep 2
       @client.reply_message(token, {
         type: 'text',
         text: norikae.search
