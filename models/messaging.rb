@@ -14,6 +14,20 @@ class Messaging
     @message = message
   end
 
+  def api_dispatcher(token, text)
+    case text
+    when /([^0-9a-zA-Z]+)→([^0-9a-zA-Z\s]+)(?:\s*)(\u59CB\u767A){0,}(\u7D42\u96FB){0,}/i
+      from, to, shihatu, shuden = $1, $2, $3, $4
+      norikae = Norikae.new(from, to, shihatu, shuden)
+      message = norikae.before_search
+      @client.reply_message(token, message) unless message.nil?
+      @client.reply_message(token, {
+        type: 'text',
+        text: message
+      }) unless message.nil?
+    end
+  end
+
   def send
     unless @client.validate_signature(@message, @signature)
       return {:success => false, :body => {:status => 400}}
@@ -25,15 +39,7 @@ class Messaging
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-
-          norikae = Norikae.new
-          norikae.search(@message)
-
-          message = {
-            type: 'text',
-            text: event.message['text']
-          }
-          @client.reply_message(event['replyToken'], message)
+          api_dispatcher(event['replyToken'], event.message['text'].force_encoding("UTF-8"))
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           # Nothing to do
         when Line::Bot::Event::MessageType::Location

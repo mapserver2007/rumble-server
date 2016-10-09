@@ -1,20 +1,39 @@
 # -*- coding: utf-8 -*-
-
+require 'httpclient'
+require 'uri'
 
 class Norikae
-
-  def initialize
-
+  def initialize(from, to, shihatu, shuden)
+    @from, @to, @shihatu, @shuden = from, to, shihatu, shuden
+    @type = {
+      :cway => 0, :trainType => "乗り換え"
+    }
+    if !shihatu.nil?
+      @type[:cway] = 2 # 始発
+      @type[:trainType] = $3
+    elsif !shuden.nil?
+      @type[:cway] = 3 # 終電
+      @type[:trainType] = $4
+    end
   end
 
-  def search(message)
-    if /([^0-9a-zA-Z]+)→([^0-9a-zA-Z\s]+)(?:\s*)(\u59CB\u767A){0,}(\u7D42\u96FB){0,}/i =~ message.force_encoding("UTF-8")
-      cway = 0
-      trainType = "乗り換え"
-      puts "---"
-      Logger.info message.force_encoding("UTF-8")
+  def before_search
+    "#{@type[:trainType]}しらべるよぉ" unless @type.nil?
+  end
+
+  def search
+    url = "http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=1&eki1=#{URI.escape(@from)}&eki2=#{URI.escape(@to)}&type=t&Cway=#{@type[:cway]}"
+    response = HTTPClient.new.get_content(url)
+    result = ""
+    if /(■[\s\S]*?■.+)/ =~ response
+      result = $1
+      if /(発着時間.+?着)/ =~ response
+        result = "#{$1}\n#{result}"
+      end
+    else
+      result << "わからない経路だよぉ(>_<)"
     end
 
+    result
   end
-
 end

@@ -1,23 +1,16 @@
 require 'sinatra/json'
 
 post '/callback' do
-  Logger.info "kita-"
+  signature = request.env['HTTP_X_LINE_SIGNATURE']
+  messaging = Messaging.new(signature)
+  messaging.body = request.body.read
+  result = messaging.send
 
-  norikae = Norikae.new
-  norikae.search(request.body.read)
-
-
-  # body = request.body.read
-  # signature = request.env['HTTP_X_LINE_SIGNATURE']
-  # messaging = Messaging.new(signature)
-  # messaging.body = body
-  # result = messaging.send
-  #
-  # if result[:success]
-  #   json(result[:body])
-  # else
-  #   error json(result[:body])
-  # end
+  if result[:success]
+    json(result[:body])
+  else
+    error json(result[:body])
+  end
 end
 
 post '/notify' do
