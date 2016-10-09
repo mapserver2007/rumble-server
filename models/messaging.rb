@@ -23,7 +23,7 @@ class Messaging
       @client.reply_message(token, message) unless message.nil?
       @client.reply_message(token, {
         type: 'text',
-        text: message
+        text: norikae.search
       }) unless message.nil?
     end
   end
