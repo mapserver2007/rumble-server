@@ -18,10 +18,6 @@ class Norikae
     end
   end
 
-  def before_search
-    "#{@type[:trainType]}しらべるよぉ" unless @type.nil?
-  end
-
   def search
     url = "http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=1&eki1=#{URI.escape(@from)}&eki2=#{URI.escape(@to)}&type=t&Cway=#{@type[:cway]}"
     response = HTTPClient.new.get_content(url)
@@ -32,7 +28,7 @@ class Norikae
         result = "#{$1}\n#{result}"
       end
     else
-      result << "わからない経路だよぉ(>_<)"
+      result = "わからない経路だよぉ(>_<)"
     end
 
     result

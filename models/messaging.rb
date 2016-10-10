@@ -19,10 +19,7 @@ class Messaging
     when /([^0-9a-zA-Z]+)→([^0-9a-zA-Z\s]+)(?:\s*)(\u59CB\u767A){0,}(\u7D42\u96FB){0,}/i
       from, to, shihatu, shuden = $1, $2, $3, $4
       norikae = Norikae.new(from, to, shihatu, shuden)
-      message = norikae.before_search
-      @client.reply_message(token, {type: 'text', text: message}) unless message.nil?
-      # message = norikae.search
-      # @client.reply_message(token, {type: 'text', text: message}) unless message.nil?
+      @client.reply_message(token, {type: 'text', text: norikae.search})
     end
   end
 
