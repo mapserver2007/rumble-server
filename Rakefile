@@ -11,7 +11,6 @@ config_files.each do |file|
   file.each {|key, value| config[key] = value}
 end
 
-
 task:default => [:github_push, :heroku_deploy]
 
 task :github_push do
