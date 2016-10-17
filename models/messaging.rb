@@ -24,10 +24,10 @@ class Messaging
       keyword, count = $1, $2 # TODO 回数
       tumblr = Tumblr.new
       res = tumblr.get_image($1)
-      if res.state = 200
-        @client.reply_message(token, {type: 'image', originalContentUrl: res.image, previewImageUrl: res.image})
+      if res[:state] = 200
+        @client.reply_message(token, {type: 'image', originalContentUrl: res[:image], previewImageUrl: res[:image]})
       else
-        @client.reply_message(token, {type: 'text', text: res.text})
+        @client.reply_message(token, {type: 'text', text: res[:text]})
       end
     end
   end
