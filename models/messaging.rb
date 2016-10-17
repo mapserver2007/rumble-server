@@ -20,6 +20,14 @@ class Messaging
       from, to, shihatu, shuden = $1, $2, $3, $4
       norikae = Norikae.new(from, to, shihatu, shuden)
       @client.reply_message(token, {type: 'text', text: norikae.search})
+    when /(?:(.+)画像)(?:はよ|クレメンス|くれ)((?:\uFF01|!){0,})/i
+      tumblr = Tumblr.new
+      res = tumblr.get_image
+      if res.state = 200
+        @client.reply_message(token, {type: 'image', originalContentUrl: res.image, previewImageUrl: res.image})
+      else
+        @client.reply_message(token, {type: 'text', text: res.text})
+      end
     end
   end
 
