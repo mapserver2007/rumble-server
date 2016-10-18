@@ -23,11 +23,11 @@ class Messaging
     when /(?:(.+)画像)(?:はよ|クレメンス|くれ)((?:\uFF01|!){0,})/i
       keyword, count = $1, $2 # TODO 回数
       tumblr = Tumblr.new
-      res = tumblr.get_image($1)
+      res = tumblr.get_image(keyword)
       if res[:state] = 200
         # @client.reply_message(token, {type: 'text', text: res[:image]})
-        hoge = "http://img1.kakaku.k-img.com/images/home/logo_home.png"
-        Logger.info res['image']
+        hoge = "http://img1.kakaku.k-img.com/images/productimage/l/K0000791115.jpg"
+        Logger.info res[:image]
         @client.reply_message(token, {type: 'image', originalContentUrl: hoge, previewImageUrl: hoge})
       else
         @client.reply_message(token, {type: 'text', text: res[:text]})
