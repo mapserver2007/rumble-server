@@ -27,7 +27,7 @@ class Messaging
       if res[:state] = 200
         # @client.reply_message(token, {type: 'text', text: res[:image]})
         hoge = "http://img1.kakaku.k-img.com/images/home/logo_home.png"
-        log.info res['image']
+        Logger.info res['image']
         @client.reply_message(token, {type: 'image', originalContentUrl: hoge, previewImageUrl: hoge})
       else
         @client.reply_message(token, {type: 'text', text: res[:text]})
