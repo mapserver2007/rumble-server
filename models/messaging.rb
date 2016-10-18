@@ -25,10 +25,10 @@ class Messaging
       tumblr = Tumblr.new
       res = tumblr.get_image(keyword)
       if res[:state] = 200
-        # @client.reply_message(token, {type: 'text', text: res[:image]})
-        hoge = "https://goo.gl/KpIbwJ"
-        Logger.info res[:image]
-        @client.reply_message(token, {type: 'image', originalContentUrl: hoge, previewImageUrl: hoge})
+        2.times {
+          @client.reply_message(token, {type: 'image', originalContentUrl: res[:image], previewImageUrl: res[:image]})
+        }
+
       else
         @client.reply_message(token, {type: 'text', text: res[:text]})
       end
