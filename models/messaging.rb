@@ -26,7 +26,8 @@ class Messaging
       res = tumblr.get_image($1)
       if res[:state] = 200
         # @client.reply_message(token, {type: 'text', text: res[:image]})
-        @client.reply_message(token, {type: 'image', originalContentUrl: res[:image], previewImageUrl: res[:image]})
+        hoge = "http://img1.kakaku.k-img.com/images/home/logo_home.png"
+        @client.reply_message(token, {type: 'image', originalContentUrl: res[:image], previewImageUrl: hoge})
       else
         @client.reply_message(token, {type: 'text', text: res[:text]})
       end
