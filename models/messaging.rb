@@ -26,7 +26,7 @@ class Messaging
       res = tumblr.get_image(keyword)
       if res[:state] = 200
         # @client.reply_message(token, {type: 'text', text: res[:image]})
-        hoge = "https://66.media.tumblr.com/0bd93e08e0df0ae1065a28f8cb36345c/tumblr_of7qc2NFX51qd227ho3_500.jpg"
+        hoge = "https://goo.gl/KpIbwJ"
         Logger.info res[:image]
         @client.reply_message(token, {type: 'image', originalContentUrl: hoge, previewImageUrl: hoge})
       else
