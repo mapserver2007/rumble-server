@@ -25,9 +25,11 @@ class Messaging
       tumblr = Tumblr.new
       res = tumblr.get_image(keyword)
       if res[:state] = 200
-        2.times {
-          @client.reply_message(token, {type: 'image', originalContentUrl: res[:image], previewImageUrl: res[:image]})
-        }
+        @client.reply_message(token,
+          [{type: 'image', originalContentUrl: res[:image], previewImageUrl: res[:image]},
+           {type: 'image', originalContentUrl: res[:image], previewImageUrl: res[:image]}]
+
+        )
 
       else
         @client.reply_message(token, {type: 'text', text: res[:text]})
