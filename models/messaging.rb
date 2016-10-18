@@ -21,16 +21,16 @@ class Messaging
       norikae = Norikae.new(from, to, shihatu, shuden)
       @client.reply_message(token, {type: 'text', text: norikae.search})
     when /(?:(.+)画像)(?:はよ|クレメンス|くれ)((?:\uFF01|!){0,})/i
-      keyword, count = $1, $2 # TODO 回数
+      keyword = $1
+      count = $2.size.between?(1, 9) ? $2.size : 1
       tumblr = Tumblr.new
-      res = tumblr.get_image(keyword)
+      res = tumblr.get_image(keyword, count)
       if res[:state] = 200
-        @client.reply_message(token,
-          [{type: 'image', originalContentUrl: res[:image], previewImageUrl: res[:image]},
-           {type: 'image', originalContentUrl: res[:image], previewImageUrl: res[:image]}]
-
-        )
-
+        params = []
+        res[:image].each do |url|
+          params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
+        end
+        @client.reply_message(token, params)
       else
         @client.reply_message(token, {type: 'text', text: res[:text]})
       end
