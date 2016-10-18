@@ -25,7 +25,7 @@ class Messaging
       count = $2.size.between?(1, 9) ? $2.size : 1
       tumblr = Tumblr.new
       res = tumblr.get_image(keyword, count)
-      if res[:state] = 200
+      if res[:state] == 200
         params = []
         Logger.info res
         res[:image].each do |url|
