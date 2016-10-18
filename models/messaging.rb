@@ -27,6 +27,7 @@ class Messaging
       res = tumblr.get_image(keyword, count)
       if res[:state] = 200
         params = []
+        Logger.info res
         res[:image].each do |url|
           params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
         end
