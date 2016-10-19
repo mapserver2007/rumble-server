@@ -33,7 +33,7 @@ class Messaging
           # params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
         end
 
-        @client.reply_message(token, {type: 'template', altText: 'Don\'t support carousel.' template: columns})
+        @client.reply_message(token, {type: 'template', altText: 'Don\'t support carousel.', template: columns})
 
         # @client.reply_message(token, params)
       else
