@@ -33,6 +33,8 @@ class Messaging
           ]}
         end
 
+        Logger.info columns
+
         @client.reply_message(token, {
           type: 'template',
           altText: 'Don\'t support carousel.',
