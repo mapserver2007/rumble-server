@@ -29,6 +29,7 @@ class Messaging
         # params = []
         columns = []
         res[:contents].each do |content|
+          Logger.info content
           columns << {thumbnailImageUrl: content['img'], text: content['text'] || "(no title)", actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content['img']}
           ]}
