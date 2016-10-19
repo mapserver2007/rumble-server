@@ -29,7 +29,9 @@ class Messaging
         # params = []
         columns = []
         res[:image].each do |url|
-          columns << {thumbnailImageUrl: url, title: "test", text: "text"}
+          columns << {thumbnailImageUrl: url, title: "test", text: "text", actions: [
+            {type: 'uri', label: 'kakaku.com', uri: 'http://kakaku.com'}
+          ]}
           # params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
         end
 
