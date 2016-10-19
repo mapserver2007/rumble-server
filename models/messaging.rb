@@ -27,11 +27,14 @@ class Messaging
       res = tumblr.get_image(keyword, count)
       if res[:state] == 200
         params = []
-        Logger.info res
         res[:image].each do |url|
-          params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
+          params << {thumbnailImageUrl: url, title: "test", text: "text"}
+          # params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
         end
-        @client.reply_message(token, params)
+
+        @client.reply_message(token, {type: 'carousel', columns: params)
+
+        # @client.reply_message(token, params)
       else
         @client.reply_message(token, {type: 'text', text: res[:text]})
       end
