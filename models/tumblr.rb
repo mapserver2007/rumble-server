@@ -24,7 +24,7 @@ class Tumblr
 
       return {
         :state => 200,
-        :image => result
+        :contents => result
       }
     else
       return {
