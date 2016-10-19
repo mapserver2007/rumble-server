@@ -22,15 +22,15 @@ class Messaging
       @client.reply_message(token, {type: 'text', text: norikae.search})
     when /(?:(.+)画像)(?:はよ|クレメンス|くれ)((?:\uFF01|!){0,})/i
       keyword = $1
-      count = $2.size.between?(1, 9) ? $2.size : 1
+      count = $2.size.between?(1, 5) ? $2.size : 1
       tumblr = Tumblr.new
       res = tumblr.get_image(keyword, count)
       if res[:state] == 200
         # params = []
         columns = []
-        res[:image].each do |url|
-          columns << {thumbnailImageUrl: url, title: "test", text: "text", actions: [
-            {type: 'uri', label: 'kakaku.com', uri: 'http://kakaku.com'}
+        res[:contents].each do |content|
+          columns << {thumbnailImageUrl: content['img'], text: content['text'] || "(no title)", actions: [
+            {type: 'uri', label: '大きい画像を見る', uri: content['img']}
           ]}
           # params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
         end

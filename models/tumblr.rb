@@ -12,14 +12,14 @@ class Tumblr
   def get_image(keyword, count)
     list = get({:keyword => keyword})
 
-    if list.any? && list[0]['img'].any?
-      img_list = list[0]['img']
+    if list.any? && list[0]['contents'].any?
+      contents = list[0]['contents']
 
       result = []
       count.times do
-        index = rand(img_list.size)
-        result << img_list[index]
-        img_list.delete_at(index)
+        index = rand(contents.size)
+        result << contents[index]
+        contents.delete_at(index)
       end
 
       return {
