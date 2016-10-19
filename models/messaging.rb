@@ -26,13 +26,14 @@ class Messaging
       tumblr = Tumblr.new
       res = tumblr.get_image(keyword, count)
       if res[:state] == 200
-        params = []
+        # params = []
+        columns = []
         res[:image].each do |url|
-          params << {thumbnailImageUrl: url, title: "test", text: "text"}
+          columns << {thumbnailImageUrl: url, title: "test", text: "text"}
           # params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
         end
 
-        @client.reply_message(token, {type: 'carousel', columns: params})
+        @client.reply_message(token, {type: 'template', altText: 'Don\'t support carousel.' template: columns})
 
         # @client.reply_message(token, params)
       else
