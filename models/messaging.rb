@@ -32,7 +32,7 @@ class Messaging
           # params << {type: 'image', originalContentUrl: url, previewImageUrl: url}
         end
 
-        @client.reply_message(token, {type: 'carousel', columns: params)
+        @client.reply_message(token, {type: 'carousel', columns: params})
 
         # @client.reply_message(token, params)
       else
