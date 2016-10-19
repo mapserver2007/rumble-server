@@ -28,12 +28,10 @@ class Messaging
       if res[:state] == 200
         columns = []
         res[:contents].each do |content|
-          columns << {thumbnailImageUrl: content['img'], text: content['text'] || "(no title)", actions: [
+          columns << {thumbnailImageUrl: content['img'], text: content['text'], actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content['img']}
           ]}
         end
-
-        Logger.info columns
 
         @client.reply_message(token, {
           type: 'template',

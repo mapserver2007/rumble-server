@@ -18,6 +18,9 @@ class Tumblr
       result = []
       count.times do
         index = rand(contents.size)
+        if contents[index]['text'].empty?
+          contents[index]['text'] = "(no title)"
+        end
         result << contents[index]
         contents.delete_at(index)
       end
