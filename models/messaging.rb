@@ -30,7 +30,7 @@ class Messaging
         res[:contents].each do |content|
           columns << {thumbnailImageUrl: content['img'], text: content['text'], actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content['img']},
-            {type: 'postback', lable: '二度と表示しない', data: 'postback_delete_image=' + content['img']}
+            {type: 'postback', lable: '二度と表示しない', data: 'postback_delete_image=test'}
           ]}
         end
 
