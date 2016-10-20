@@ -71,7 +71,6 @@ class Messaging
         end
       when Line::Bot::Event::Postback
         Logger.info event
-        Logger.info event.message['text']
       end
     end
 
