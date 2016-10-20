@@ -69,6 +69,9 @@ class Messaging
           # Yet implement ...
           # 位置情報から、「何を探しましょう？」的な会話を実装したい
         end
+      when Line::Bot::Event::Postback
+        Logger.info event
+        Logger.info event.message['text']
       end
     end
 

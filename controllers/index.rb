@@ -6,8 +6,6 @@ post '/callback' do
   messaging.body = request.body.read
   result = messaging.send
 
-  Logger.info params
-
   if result[:success]
     json(result[:body])
   else
