@@ -6,6 +6,10 @@ post '/callback' do
   messaging.body = request.body.read
   result = messaging.send
 
+  unless params[:postback_delete_image].nil?
+    Logger.info params
+  end
+
   if result[:success]
     json(result[:body])
   else
