@@ -44,6 +44,7 @@ GEM
     tilt (2.0.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    weighted_randomizer (0.1.2)
 
 PLATFORMS
   ruby
@@ -59,6 +60,7 @@ DEPENDENCIES
   sinatra
   sinatra-contrib
   thin (~> 1.6, >= 1.6.3)
+  weighted_randomizer
 
 RUBY VERSION
    ruby 2.3.1p112
