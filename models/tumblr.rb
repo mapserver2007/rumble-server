@@ -1,39 +1,47 @@
+require 'weighted_randomizer'
+
 class Tumblr
   HOST = 'api.mlab.com'
   PATH = '/api/1/databases/%s/collections/%s'
 
   def initialize
-    database   = Config["MLAB_DATABASE"]
-    collection = Config["MLAB_COLLECTION"]
+    @database  = Config["MLAB_DATABASE"]
     @apikey    = Config["MLAB_APIKEY"]
-    @path      = PATH % [database, collection]
   end
 
   def get_image(keyword, count)
-    list = get({:keyword => keyword})
+    contents = []
+    name_master = get({:name => keyword}, Config["MLAB_NAME_COLLECTION"])
 
-    if list.any? && list[0]['contents'].any?
-      contents = list[0]['contents']
-
-      result = []
-      count.times do
-        index = rand(contents.size)
-        if contents[index]['text'].empty?
-          contents[index]['text'] = "(no title)"
+    unless name_master.empty?
+      image_master = get({:id => name_master[0]['hash']}, Config["MLAB_IMAGE_COLLECTION"])
+      unless image_master.empty?
+        images = image_master[0]['images']
+        search_map = {}
+        image_map = {}
+        images.each do |image|
+          search_map[image['url']] = image['priority']
+          image_map[image['url']] = image
         end
-        result << contents[index]
-        contents.delete_at(index)
-      end
 
-      return {
-        :state => 200,
-        :contents => result
-      }
+        count.times do
+          randomizer = WeightedRandomizer.new(search_map)
+          key = randomizer.sample
+          break if key.nil?
+
+          contents << {
+            img: image_map[key]['url'],
+            text: image_map[key]['text'] || "(no title)"
+          }
+          search_map.delete(key)
+        end
+      end
+    end
+
+    if contents.empty?
+      {state: 404, text: "…画像がみつからないよぉ( \uA4AA\u2313\uA4AA)"}
     else
-      return {
-        :state => 404,
-        :text => "…画像がみつからないよぉ( ꒪⌓꒪)"
-      }
+      {state: 200, contents: contents}
     end
   end
 
@@ -45,9 +53,9 @@ class Tumblr
     https.start { yield https }
   end
 
-  def get(cond)
+  def get(cond, collection)
     https_start do |https|
-      JSON.parse(https.get(@path + "?apiKey=#{@apikey}&q=" + cond.to_json).body)
+      JSON.parse(https.get(PATH % [@database, collection] + "?apiKey=#{@apikey}&q=" + cond.to_json).body)
     end
   end
 end
