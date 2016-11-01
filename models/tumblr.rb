@@ -31,7 +31,7 @@ class Tumblr
 
           contents << {
             img: image_map[key]['url'],
-            text: image_map[key]['text'] || "(no title)"
+            text: image_map[key]['text'].empty? ? "(no title)" : image_map[key]['text']
           }
           search_map.delete(key)
         end

@@ -49,9 +49,6 @@ class Messaging
           ]}
         end
 
-        p @token
-        p columns
-
         @client.reply_message(@token, {
           type: 'template',
           altText: 'Don\'t support carousel.',
