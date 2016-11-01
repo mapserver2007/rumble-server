@@ -49,7 +49,7 @@ class Messaging
           ]}
         end
 
-        @client.reply_message(token, {
+        @client.reply_message(@token, {
           type: 'template',
           altText: 'Don\'t support carousel.',
           template: {
