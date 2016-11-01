@@ -42,6 +42,7 @@ class Messaging
       if res[:state] == 200
         columns = []
         res[:contents].each do |content|
+          p content
           columns << {thumbnailImageUrl: content['url'], text: content['text'], actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content['url']},
             {type: 'postback', label: '二度と表示しない', data: 'action=delete&img=' + content['url']}, # パラメータは適当
