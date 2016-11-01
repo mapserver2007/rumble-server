@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 require 'line/bot'
 
+module DispatchType
+  Reply = 1
+  PostBack = 2
+end
+
 class Messaging
   def initialize(signature)
     @client ||= Line::Bot::Client.new { |config|
@@ -14,12 +19,21 @@ class Messaging
     @message = message
   end
 
-  def api_dispatcher(token, text)
+  def api_dispatcher(type, text)
+    case type
+    when DispatchType::Reply
+      reply_at text
+    when DispatchType::PostBack
+      postback_at text
+    end
+  end
+
+  def reply_at(text)
     case text
     when /([^0-9a-zA-Z]+)→([^0-9a-zA-Z\s]+)(?:\s*)(\u59CB\u767A){0,}(\u7D42\u96FB){0,}/i
       from, to, shihatu, shuden = $1, $2, $3, $4
       norikae = Norikae.new(from, to, shihatu, shuden)
-      @client.reply_message(token, {type: 'text', text: norikae.search})
+      @client.reply_message(@token, {type: 'text', text: norikae.search})
     when /(?:(.+)画像)(?:はよ|クレメンス|くれ)((?:\uFF01|!){0,})/i
       keyword = $1
       count = $2.size.between?(1, 5) ? $2.size : 1
@@ -44,11 +58,13 @@ class Messaging
           }
         })
       else
-        @client.reply_message(token, {type: 'text', text: res[:text]})
+        @client.reply_message(@token, {type: 'text', text: res[:text]})
       end
-    else
-      @client.reply_message(token, {type: 'text', text: "TODO ネタ画像を返してごまかしたい"})
     end
+  end
+
+  def postback_at(text)
+
   end
 
   def send
@@ -58,11 +74,12 @@ class Messaging
 
     events = @client.parse_events_from(@message)
     events.each do |event|
+      @token = event['replyToken']
       case event
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          api_dispatcher(event['replyToken'], event.message['text'].force_encoding("UTF-8"))
+          api_dispatcher(DispatchType::Reply, event.message['text'].force_encoding("UTF-8"))
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           # Nothing to do
         when Line::Bot::Event::MessageType::Location
