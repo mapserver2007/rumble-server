@@ -42,10 +42,10 @@ class Messaging
       if res[:state] == 200
         columns = []
         res[:contents].each do |content|
-          columns << {thumbnailImageUrl: content['img'], text: content['text'], actions: [
-            {type: 'uri', label: '大きい画像を見る', uri: content['img']},
-            {type: 'postback', label: '二度と表示しない', data: 'action=delete&img=' + content['img']}, # パラメータは適当
-            {type: 'postback', label: '別人じゃねーか', data: 'action=move&img=' + content['img']}
+          columns << {thumbnailImageUrl: content['url'], text: content['text'], actions: [
+            {type: 'uri', label: '大きい画像を見る', uri: content['url']},
+            {type: 'postback', label: '二度と表示しない', data: 'action=delete&img=' + content['url']}, # パラメータは適当
+            {type: 'postback', label: '別人じゃねーか', data: 'action=move&img=' + content['url']}
           ]}
         end
 

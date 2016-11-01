@@ -19,8 +19,6 @@ class Tumblr
         images = image_master[0]['images']
         search_map = {}
         image_map = {}
-        p image_master[0]
-        p images
         images.each do |image|
           search_map[image['url']] = image['priority']
           image_map[image['url']] = image
