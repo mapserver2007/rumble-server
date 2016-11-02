@@ -56,8 +56,6 @@ class Messaging
           ]}
         end
 
-        p columns
-
         @client.reply_message(@token, {
           type: 'template',
           altText: 'Don\'t support carousel.',
@@ -74,7 +72,8 @@ class Messaging
 
   def postback_at(query, value)
     tumblr = Tumblr.new
-    tumblr.update_priority(query['id'], query['img'], value)
+    text = tumblr.update_priority(query['id'], query['img'], value)
+    @client.reply_message(@token, {type: 'text', text: text})
   end
 
   def send

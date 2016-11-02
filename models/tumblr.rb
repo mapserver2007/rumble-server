@@ -48,17 +48,24 @@ class Tumblr
   end
 
   def update_priority(id, url, value)
+    text = "なんかエラーおきたっぽい＼(^o^)／"
     data = get({:id => id}, Config["MLAB_IMAGE_COLLECTION"])
     unless data.empty?
+      updated_priority = 0
       data[0]['images'].each do |image|
         if image['url'] == url
           image['priority'] += value
+          updated_priority = image['priority']
           break
         end
       end
 
-      p put(data, {:_id => data[0]['_id']}, Config["MLAB_IMAGE_COLLECTION"])
+      if put(data, {:_id => data[0]['_id']}, Config["MLAB_IMAGE_COLLECTION"])
+        text = "ないわーしたよ(#{updated_priority})"
+      end
     end
+
+    text
   end
 
   def https_start
