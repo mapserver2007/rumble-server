@@ -3,6 +3,7 @@ require 'weighted_randomizer'
 class Tumblr
   HOST = 'api.mlab.com'
   PATH = '/api/1/databases/%s/collections/%s'
+  HEADER = {'Content-Type' => "application/json"}
 
   def initialize
     @database  = Config["MLAB_DATABASE"]
@@ -76,7 +77,7 @@ class Tumblr
 
   def put(data, cond, collection)
     https_start do |https|
-      https.put(@path + "?apiKey=#{@apikey}&q=" + cond.to_json, data.to_json, @header).code == "200"
+      https.put(PATH % [@database, collection] + "?apiKey=#{@apikey}&q=" + cond.to_json, data.to_json, HEADER).code == "200"
     end
   end
 end
