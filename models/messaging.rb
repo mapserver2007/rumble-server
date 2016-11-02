@@ -9,7 +9,6 @@ end
 module ActionType
   Up = "up"
   Down = "down"
-  Replace = "replace"
 end
 
 class Messaging
@@ -52,7 +51,6 @@ class Messaging
             {type: 'uri', label: '大きい画像を見る', uri: content[:img]},
             {type: 'postback', label: 'いいね！', data: "action=up&id=#{content[:id]}&img=#{content[:img]}"},
             {type: 'postback', label: 'ないわー', data: "action=down&id=#{content[:id]}&img=#{content[:img]}"}
-            # {type: 'postback', label: 'これはひどい', data: "action=replace&id=#{content[:id]}&img=#{content[:img]}"}
           ]}
         end
 
@@ -72,8 +70,7 @@ class Messaging
 
   def postback_at(query, value)
     tumblr = Tumblr.new
-    text = tumblr.update_priority(query['id'], query['img'], value)
-    @client.reply_message(@token, {type: 'text', text: text})
+    tumblr.update_priority(query['id'], query['img'], value)
   end
 
   def send
@@ -99,9 +96,23 @@ class Messaging
         query = URI::decode_www_form(event['postback']['data']).to_h
         case query['action']
         when ActionType::Up
-          Logger.info query['img']
+          result = postback_at query, 1
+          text = nil
+          if result[:status]
+            text = "いいねしたよー(#{result[:value]})"
+          else
+            text = "なんかエラーおきた"
+          end
+          @client.reply_message(@token, {type: 'text', text: text})
         when ActionType::Down
-          postback_at query, -1
+          result = postback_at query, -1
+          text = nil
+          if result[:status]
+            text = "ないわーしたよー(#{result[:value]})"
+          else
+            text = "なんかエラーおきた"
+          end
+          @client.reply_message(@token, {type: 'text', text: text})
         end
       end
     end

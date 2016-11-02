@@ -32,3 +32,4 @@ _$*
 _svn
 sandbox
 config/config.yml
+controllers/index_dev.rb
