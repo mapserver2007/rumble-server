@@ -72,9 +72,9 @@ class Messaging
     end
   end
 
-  def postback_at(id, image, value)
+  def postback_at(query, value)
     tumblr = Tumblr.new
-    tumblr.update_priority(id, image, value)
+    tumblr.update_priority(query['id'], query['img'], value)
   end
 
   def send
@@ -102,7 +102,7 @@ class Messaging
         when ActionType::Up
           Logger.info query['img']
         when ActionType::Down
-          postback_at id, image, -1
+          postback_at query, -1
         end
       end
     end
