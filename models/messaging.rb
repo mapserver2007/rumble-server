@@ -51,7 +51,6 @@ class Messaging
           columns << {thumbnailImageUrl: content[:img], text: content[:text], actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content[:img]},
             {type: 'postback', label: 'Good\\u1F44D', data: 'action=up&img=' + content[:img]},
-            {type: 'postback', label: 'いいね！', data: "action=up&id=#{content[:id]}img=#{content[:img]}"},
             {type: 'postback', label: 'Bad\\u1F44E', data: 'action=down&img=' + content[:img]}
             # {type: 'postback', label: 'いいね！', data: "action=up&id=#{content[:id]}&img=#{content[:img]}"},
             # {type: 'postback', label: 'ないわー', data: "action=down&id=#{content[:id]}&img=#{content[:img]}"},
