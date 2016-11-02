@@ -56,7 +56,7 @@ class Tumblr
         end
       end
 
-      p put(data, {:_id => data[0]['_id']})
+      p put(data, {:_id => data[0]['_id']}, Config["MLAB_IMAGE_COLLECTION"])
     end
   end
 
