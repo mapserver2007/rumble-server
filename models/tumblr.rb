@@ -47,7 +47,7 @@ class Tumblr
   end
 
   def update_priority(id, image, value)
-    data = get({:id => id})
+    data = get({:id => id}, Config["MLAB_IMAGE_COLLECTION"])
     unless data.empty?
       p data['images']
     end
