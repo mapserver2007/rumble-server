@@ -6,6 +6,10 @@ module DispatchType
   PostBack = 2
 end
 
+module ActionType
+  Delete = "delete"
+end
+
 class Messaging
   def initialize(signature)
     @client ||= Line::Bot::Client.new { |config|
@@ -44,8 +48,7 @@ class Messaging
         res[:contents].each do |content|
           columns << {thumbnailImageUrl: content[:img], text: content[:text], actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content[:img]},
-            {type: 'postback', label: '二度と表示しない', data: 'action=delete&img=' + content[:img]}, # パラメータは適当
-            {type: 'postback', label: '別人じゃねーか', data: 'action=move&img=' + content[:img]}
+            {type: 'postback', label: '二度と表示しない', data: 'action=delete&img=' + content[:img]} # パラメータは適当
           ]}
         end
 
@@ -87,7 +90,11 @@ class Messaging
           # 位置情報から、「何を探しましょう？」的な会話を実装したい
         end
       when Line::Bot::Event::Postback
-        Logger.info event
+        query = URI::decode_www_form(event['postback']['data']).to_h
+        case query['action']
+        when ActionType::Delete
+          Logger.info query['img']
+        end
       end
     end
 
