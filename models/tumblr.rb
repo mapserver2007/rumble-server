@@ -51,13 +51,12 @@ class Tumblr
     unless data.empty?
       data[0]['images'].each do |image|
         if image['url'] == url
-          image['url'] = "kita-"
+          image['priority'] += value
           break
         end
       end
 
-      p url
-      p data
+      p put(data, {:_id => data[0]['_id']})
     end
   end
 
