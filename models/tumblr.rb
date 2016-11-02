@@ -46,9 +46,17 @@ class Tumblr
     end
   end
 
-  def update_priority(id, image, value)
+  def update_priority(id, url, value)
     data = get({:id => id}, Config["MLAB_IMAGE_COLLECTION"])
     unless data.empty?
+      data[0]['images'].each do |image|
+        if image['url'] == url
+          image['url'] = "kita-"
+          break
+        end
+      end
+
+      p url
       p data
     end
   end
