@@ -7,7 +7,8 @@ module DispatchType
 end
 
 module ActionType
-  Delete = "delete"
+  Up = "up"
+  Down = "down"
 end
 
 class Messaging
@@ -48,7 +49,8 @@ class Messaging
         res[:contents].each do |content|
           columns << {thumbnailImageUrl: content[:img], text: content[:text], actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content[:img]},
-            {type: 'postback', label: '二度と表示しない', data: 'action=delete&img=' + content[:img]} # パラメータは適当
+            {type: 'postback', label: 'Good\u1F44D', data: 'action=up&img=' + content[:img]},
+            {type: 'postback', label: 'Bad\u1F44E', data: 'action=down&img=' + content[:img]}
           ]}
         end
 
@@ -92,7 +94,9 @@ class Messaging
       when Line::Bot::Event::Postback
         query = URI::decode_www_form(event['postback']['data']).to_h
         case query['action']
-        when ActionType::Delete
+        when ActionType::Up
+          Logger.info query['img']
+        when ActionType::Down
           Logger.info query['img']
         end
       end
