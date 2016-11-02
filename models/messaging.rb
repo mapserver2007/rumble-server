@@ -51,7 +51,7 @@ class Messaging
           columns << {thumbnailImageUrl: content[:img], text: content[:text], actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content[:img]},
             {type: 'postback', label: 'いいね！', data: "action=up&id=#{content[:id]}&img=#{content[:img]}"},
-            {type: 'postback', label: 'ないわー', data: "action=down&id=#{content[:id]}&img=#{content[:img]}"}
+            {type: 'postback', label: 'ないわー', data: "action=down"}
           ]}
         end
 
