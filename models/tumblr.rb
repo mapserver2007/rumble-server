@@ -30,6 +30,7 @@ class Tumblr
           break if key.nil?
 
           contents << {
+            id: image_master[0]['id'],
             img: image_map[key]['url'],
             text: image_map[key]['text'].empty? ? "(no title)" : image_map[key]['text']
           }
@@ -45,6 +46,13 @@ class Tumblr
     end
   end
 
+  def update_priority(id, image, value)
+    data = get({:id => id})
+    unless data.empty?
+      p data['images']
+    end
+  end
+
   def https_start
     Net::HTTP.version_1_2
     https = Net::HTTP.new(HOST, 443)
@@ -56,6 +64,12 @@ class Tumblr
   def get(cond, collection)
     https_start do |https|
       JSON.parse(https.get(PATH % [@database, collection] + "?apiKey=#{@apikey}&q=" + cond.to_json).body)
+    end
+  end
+
+  def put(data, cond, collection)
+    https_start do |https|
+      https.put(@path + "?apiKey=#{@apikey}&q=" + cond.to_json, data.to_json, @header).code == "200"
     end
   end
 end
