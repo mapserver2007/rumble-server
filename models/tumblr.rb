@@ -47,7 +47,7 @@ class Tumblr
     end
   end
 
-  def update_priority(id, url, value)
+  def update_priority(id, url, value, overwrite = false)
     result = {status: 500, value: nil}
     data = get({:id => id}, Config["MLAB_IMAGE_COLLECTION"])
     unless data.empty?
@@ -55,7 +55,12 @@ class Tumblr
       urls = url.is_a?(Array) ? url : [url]
       data[0]['images'].each do |image|
         if urls.include? image['url']
-          image['priority'] += value
+          if overwrite
+            image['priority'] = value
+          else
+            image['priority'] += value
+          end
+
           updated_priority = image['priority']
           break
         end
