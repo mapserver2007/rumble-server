@@ -46,17 +46,23 @@ class Messaging
       res = tumblr.get_image(keyword, count)
       if res[:state] == 200
         columns = []
+        urls = []
+        id = nil
         res[:contents].each do |content|
           columns << {thumbnailImageUrl: content[:img], text: content[:text], actions: [
             {type: 'uri', label: '大きい画像を見る', uri: content[:img]},
             {type: 'postback', label: 'いいね！', data: "action=up&id=#{content[:id]}&img=#{content[:img]}"},
-            {type: 'postback', label: 'ないわー', data: "action=down&id=#{content[:id]}&img=#{content[:img]}"}
+            {type: 'postback', label: 'この画像を表示しない', data: "action=down&id=#{content[:id]}&img=#{content[:img]}"}
           ]}
+          urls << content[:img]
+          id = content[:id] if id.nil?
         end
+
+        update_at {id: id, img: urls}
 
         @client.reply_message(@token, {
           type: 'template',
-          altText: 'Don\'t support carousel.',
+          altText: '画像を表示しました',
           template: {
             type: 'carousel',
             columns: columns
@@ -66,11 +72,6 @@ class Messaging
         @client.reply_message(@token, {type: 'text', text: res[:text]})
       end
     end
-  end
-
-  def postback_at(query, value)
-    tumblr = Tumblr.new
-    tumblr.update_priority(query['id'], query['img'], value)
   end
 
   def send
@@ -93,26 +94,14 @@ class Messaging
           # 位置情報から、「何を探しましょう？」的な会話を実装したい
         end
       when Line::Bot::Event::Postback
+        tumblr = Tumblr.new
         query = URI::decode_www_form(event['postback']['data']).to_h
+
         case query['action']
         when ActionType::Up
-          result = postback_at query, 1
-          text = nil
-          if result[:status]
-            text = "いいねしたよー(#{result[:value]})"
-          else
-            text = "なんかエラーおきた"
-          end
-          @client.reply_message(@token, {type: 'text', text: text})
+          tumblr.update_priority(query['id'], query['img'], 1)
         when ActionType::Down
-          result = postback_at query, -1
-          text = nil
-          if result[:status]
-            text = "ないわーしたよー(#{result[:value]})"
-          else
-            text = "なんかエラーおきた"
-          end
-          @client.reply_message(@token, {type: 'text', text: text})
+          tumblr.update_priority(query['id'], query['img'], 0, true)
         end
       end
     end

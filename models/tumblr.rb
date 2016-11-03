@@ -27,11 +27,6 @@ class Tumblr
 
         count.times do
           randomizer = WeightedRandomizer.new(search_map)
-          p search_map
-          p randomizer.sample
-          p randomizer.sample
-          p randomizer.sample
-
           key = randomizer.sample
           break if key.nil?
 
@@ -57,8 +52,9 @@ class Tumblr
     data = get({:id => id}, Config["MLAB_IMAGE_COLLECTION"])
     unless data.empty?
       updated_priority = 0
+      urls = url.is_a?(Array) ? url : [url]
       data[0]['images'].each do |image|
-        if image['url'] == url
+        if urls.include? image['url']
           image['priority'] += value
           updated_priority = image['priority']
           break
