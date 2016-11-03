@@ -58,7 +58,7 @@ class Messaging
           id = content[:id] if id.nil?
         end
 
-        update_at {id: id, img: urls}
+        update_at({id: id, img: urls})
 
         @client.reply_message(@token, {
           type: 'template',
