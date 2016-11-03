@@ -27,6 +27,11 @@ class Tumblr
 
         count.times do
           randomizer = WeightedRandomizer.new(search_map)
+          p search_map
+          p randomizer.sample
+          p randomizer.sample
+          p randomizer.sample
+
           key = randomizer.sample
           break if key.nil?
 
