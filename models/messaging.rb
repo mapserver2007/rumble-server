@@ -58,7 +58,7 @@ class Messaging
           id = content[:id] if id.nil?
         end
 
-        update_at({id: id, img: urls})
+        tumblr.update_priority(id, urls, -1)
 
         @client.reply_message(@token, {
           type: 'template',
