@@ -49,12 +49,12 @@ class Tumblr
 
   def get_image_info(keyword)
     image_num = 0
+    image_priority_map = {}
     name_master = get({:name => keyword}, Config["MLAB_NAME_COLLECTION"])
     unless name_master.empty?
       image_master = get({:id => name_master[0]['hash']}, Config["MLAB_IMAGE_COLLECTION"])
       unless image_master.empty?
         image_num = image_master[0]['images'].size
-        image_priority_map = {}
         image_master[0]['images'].each do |image|
           if image_priority_map[image['priority']].nil?
             image_priority_map[image['priority']] = 1
@@ -62,11 +62,10 @@ class Tumblr
             image_priority_map[image['priority']] += 1
           end
         end
-
-        p image_priority_map
-
       end
     end
+
+    {num: image_num, info: image_priority_map}
   end
 
   def update_priority(id, url, value, overwrite = false)

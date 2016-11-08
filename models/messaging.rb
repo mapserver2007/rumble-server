@@ -41,7 +41,13 @@ class Messaging
     case cmd
     when Command::TumblrImageInfo
       tumblr = Tumblr.new
-      tumblr.get_image_info(text)
+      info = tumblr.get_image_info(text)
+      text_list = []
+      text_list << "【#{text}】の画像数は#{info[:num]}"
+      info[:info].each do |priority, num|
+        text_list << "priorityが『#{priority}』の画像数は『#{num}』"
+      end
+      @client.reply_message(@token, {type: 'text', text: text_list.join("\n")})
     end
   end
 
