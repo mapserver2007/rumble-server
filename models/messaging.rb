@@ -52,7 +52,7 @@ class Messaging
 cmd.h ヘルプ
 cmd.t.(声優名) 声優画像保存状況を通知
       HELP
-      @client.reply_message(@token, {type: 'text', text: text})
+      @client.reply_message(@token, {type: 'text', text: text.chomp})
     when Command::TumblrImageInfo
       tumblr = Tumblr.new
       info = tumblr.get_image_info(text)
