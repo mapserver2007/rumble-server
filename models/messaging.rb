@@ -67,7 +67,7 @@ cmd.t.(声優名) 声優画像保存状況を通知
 
   def reply_at(text)
     case text
-    when /^cmd\.([a-z_-]+)\.(.+)/i
+    when /^cmd\.([a-z_-]+)(?:\.(.+)){0,1}/i
       command_dispatcher $1, $2
     when /([^0-9a-zA-Z]+)→([^0-9a-zA-Z\s]+)(?:\s*)(\u59CB\u767A){0,}(\u7D42\u96FB){0,}/i
       from, to, shihatu, shuden = $1, $2, $3, $4
