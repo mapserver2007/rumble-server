@@ -71,6 +71,10 @@ class Messaging
       else
         @client.reply_message(@token, {type: 'text', text: res[:text]})
       end
+    when /^画像情報\s(.+)/i
+      keyword = $1
+      tumblr = Tumblr.new
+      tumblr.get_image_info(keyword)
     end
   end
 
