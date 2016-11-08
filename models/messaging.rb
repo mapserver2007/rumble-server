@@ -12,6 +12,7 @@ module ActionType
 end
 
 module Command
+  RumbleHelp = "h"
   TumblrImageInfo = "t"
 end
 
@@ -39,6 +40,19 @@ class Messaging
 
   def command_dispatcher(cmd, text)
     case cmd
+    when Command::RumbleHelp
+      text = <<-"HELP"
+【電車乗り換え】コマンド
+(発車駅)→(到着駅) (終電|始発)
+
+【声優画像取得】コマンド
+(声優名またはあだ名)画像(はよ|くれ|クレメンス)(!{0,5})
+
+【デバッグ用】コマンド
+cmd.h ヘルプ
+cmd.t.(声優名) 声優画像保存状況を通知
+      HELP
+      @client.reply_message(@token, {type: 'text', text: text})
     when Command::TumblrImageInfo
       tumblr = Tumblr.new
       info = tumblr.get_image_info(text)
