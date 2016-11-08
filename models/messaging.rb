@@ -11,6 +11,10 @@ module ActionType
   Down = "down"
 end
 
+module Command
+  TumblrImageInfo = "tif"
+end
+
 class Messaging
   def initialize(signature)
     @client ||= Line::Bot::Client.new { |config|
@@ -33,8 +37,18 @@ class Messaging
     end
   end
 
+  def command_dispatcher(cmd, text)
+    case cmd
+    when Command::TumblrImageInfo
+      tumblr = Tumblr.new
+      tumblr.get_image_info(text)
+    end
+  end
+
   def reply_at(text)
     case text
+    when /^cmd:([a-z_-]+):(.+)/i
+      command_dispatcher $1, $2
     when /([^0-9a-zA-Z]+)→([^0-9a-zA-Z\s]+)(?:\s*)(\u59CB\u767A){0,}(\u7D42\u96FB){0,}/i
       from, to, shihatu, shuden = $1, $2, $3, $4
       norikae = Norikae.new(from, to, shihatu, shuden)
@@ -71,10 +85,6 @@ class Messaging
       else
         @client.reply_message(@token, {type: 'text', text: res[:text]})
       end
-    when /^画像情報\s(.+)/i
-      keyword = $1
-      tumblr = Tumblr.new
-      tumblr.get_image_info(keyword)
     end
   end
 
