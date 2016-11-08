@@ -56,7 +56,7 @@ class Tumblr
         image_num = image_master[0]['images'].size
         image_priority_map = {}
         image_master[0]['images'].each do |image|
-          if image_priority_map[image['priority']]
+          if image_priority_map[image['priority']].nil?
             image_priority_map[image['priority']] = 1
           else
             image_priority_map[image['priority']] += 1
