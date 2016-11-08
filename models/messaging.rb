@@ -12,7 +12,7 @@ module ActionType
 end
 
 module Command
-  TumblrImageInfo = "tif"
+  TumblrImageInfo = "t"
 end
 
 class Messaging
