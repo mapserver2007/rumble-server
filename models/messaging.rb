@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'line/bot'
+require 'parallel'
 
 module DispatchType
   Reply = 1
@@ -73,6 +74,12 @@ cmd.t.(声優名) 声優画像保存状況を通知
       from, to, shihatu, shuden = $1, $2, $3, $4
       train = Train.new
       @client.reply_message(@token, {type: 'text', text: train.transfer(from, to, shihatu, shuden)})
+    when /(.+?線)([あ-んが-ぼぁ-ょゎっー]?)(遅れ|遅延|死|生|おわた)/i
+      train = Train.new
+      Parallel.each([2,3,4,5,6,7,8,9], in_threads: 3) do |area|
+        train.load_train_status(area, $1)
+      end
+      @client.reply_message(@token, {type: 'text', text: train.train_status[:name]})
     when /(?:(.+)画像)(?:はよ|クレメンス|くれ)((?:\uFF01|!){0,})/i
       keyword = $1
       count = $2.size.between?(1, 5) ? $2.size : 1
