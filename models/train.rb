@@ -21,9 +21,9 @@ class Train
       :cway => 0, :trainType => "乗り換え"
     }
 
-    if !shihatu.nil?
+    if !shihatsu.nil?
       type[:cway] = 2 # 始発
-      type[:trainType] = shihatu
+      type[:trainType] = shihatsu
     elsif !shuden.nil?
       type[:cway] = 3 # 終電
       type[:trainType] = shuden
