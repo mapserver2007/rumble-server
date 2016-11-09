@@ -79,7 +79,8 @@ cmd.t.(声優名) 声優画像保存状況を通知
       Parallel.each([2,3,4,5,6,7,8,9], in_threads: 3) do |area|
         train.load_train_status(area, $1)
       end
-      @client.reply_message(@token, {type: 'text', text: train.train_status[:name]})
+      text = train.train_status_text_list.empty? ? "#{text}は不明な路線だよー" : train_status_text_list.join("\n")
+      @client.reply_message(@token, {type: 'text', text: text})
     when /(?:(.+)画像)(?:はよ|クレメンス|くれ)((?:\uFF01|!){0,})/i
       keyword = $1
       count = $2.size.between?(1, 5) ? $2.size : 1

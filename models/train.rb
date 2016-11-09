@@ -8,11 +8,11 @@ class Train
   TRAIN_STATUS_URL = 'http://transit.yahoo.co.jp/traininfo/area/%s/'
   USERAGENT = "Mac Mozilla"
 
-  attr_accessor :train_status
+  attr_accessor :train_status_text_list
 
   def initialize
     @agent = create_agent
-    @train_status = {}
+    @train_status_text_list = []
   end
 
   def get_mapping_rules
@@ -34,6 +34,7 @@ class Train
   end
 
   def load_train_status(area, text)
+    return unless train_status_text_list.empty?
     site = @agent.get(TRAIN_STATUS_URL % area)
     trainLines = (site/'//div[@class="labelSmall"]')
     trainLines.each do |elem|
@@ -41,26 +42,20 @@ class Train
       train_info.each do |tr|
         row = tr.search("td")
         next if row.empty?
-        link = row.search("a").attribute("href").to_s
 
         alias_text = get_mapping_rules[text]
         text = alias_text unless alias_text.nil?
 
         train_name = row[0].inner_text
         unless train_name.index(text).nil?
-          @train_status = {
-            name: train_name,
-            status: row[1].inner_text.gsub(/\[!\]/, ''),
-            link: link,
-            detail: ''
-          }
-
+          @train_status_text_list << "#{train_name}は#{row[1].inner_text.gsub(/\[!\]/, '')}"
           # 平常運転以外の場合、詳細情報を取得する
           unless row[1].xpath("span[@class='icnAlert']").empty?
             agent = create_agent
             site = agent.get(link)
-            @train_status[:detail] = (site/'//dd[@class="trouble"]/p').inner_text
+            @train_status_text_list << (site/'//dd[@class="trouble"]/p').inner_text
           end
+          @train_status_text_list << row.search("a").attribute("href").to_s
         end
       end
     end
