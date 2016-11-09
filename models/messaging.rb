@@ -71,8 +71,8 @@ cmd.t.(声優名) 声優画像保存状況を通知
       command_dispatcher $1, $2
     when /([^0-9a-zA-Z]+)→([^0-9a-zA-Z\s]+)(?:\s*)(\u59CB\u767A){0,}(\u7D42\u96FB){0,}/i
       from, to, shihatu, shuden = $1, $2, $3, $4
-      norikae = Norikae.new(from, to, shihatu, shuden)
-      @client.reply_message(@token, {type: 'text', text: norikae.search})
+      train = Train.new
+      @client.reply_message(@token, {type: 'text', text: train.transfer(from, to, shihatu, shuden)})
     when /(?:(.+)画像)(?:はよ|クレメンス|くれ)((?:\uFF01|!){0,})/i
       keyword = $1
       count = $2.size.between?(1, 5) ? $2.size : 1

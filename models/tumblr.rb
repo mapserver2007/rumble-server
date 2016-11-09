@@ -41,7 +41,7 @@ class Tumblr
     end
 
     if contents.empty?
-      {state: 404, text: "…画像がみつからないよぉ( \uA4AA\u2313\uA4AA)"}
+      {state: 404, text: "…画像がみつからないよぉ"}
     else
       {state: 200, contents: contents}
     end
