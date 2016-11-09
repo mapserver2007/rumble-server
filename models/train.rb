@@ -34,7 +34,7 @@ class Train
   end
 
   def load_train_status(area, text)
-    return unless train_status_text_list.empty?
+    return unless @train_status_text_list.empty?
     site = @agent.get(TRAIN_STATUS_URL % area)
     trainLines = (site/'//div[@class="labelSmall"]')
     trainLines.each do |elem|
