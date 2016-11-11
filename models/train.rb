@@ -47,12 +47,12 @@ class Train
         row = tr.search("td")
         next if row.empty?
 
+        train_name = row[0].inner_text
+        next if ignore_rules =~ train_name
+
         alias_text = get_mapping_rules[text]
         text = alias_text unless alias_text.nil?
 
-        next if ignore_rules =~ text
-
-        train_name = row[0].inner_text
         unless train_name.index(text).nil?
           @train_status_text_list << "#{train_name}は#{row[1].inner_text.gsub(/\[!\]/, '')}"
           # 平常運転以外の場合、詳細情報を取得する
