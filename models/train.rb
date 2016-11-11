@@ -26,6 +26,10 @@ class Train
     }
   end
 
+  def ignore_rules
+    /^(?:神戸市営西神).*/
+  end
+
   def create_agent
     agent = Mechanize.new
     agent.user_agent_alias = USERAGENT
@@ -45,6 +49,8 @@ class Train
 
         alias_text = get_mapping_rules[text]
         text = alias_text unless alias_text.nil?
+
+        next if ignore_rules =~ text
 
         train_name = row[0].inner_text
         unless train_name.index(text).nil?
