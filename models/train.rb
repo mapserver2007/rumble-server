@@ -52,6 +52,7 @@ class Train
           # 平常運転以外の場合、詳細情報を取得する
           unless row[1].xpath("span[@class='icnAlert']").empty?
             agent = create_agent
+            link = row.search("a").attribute("href").to_s
             site = agent.get(link)
             @train_status_text_list << (site/'//dd[@class="trouble"]/p').inner_text
           end
