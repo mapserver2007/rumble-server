@@ -14,8 +14,11 @@ GEM
     eventmachine (1.2.0.1)
     foreman (0.82.0)
       thor (~> 0.19.1)
+    hpricot (0.8.6)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
+    httparty (0.16.1)
+      multi_xml (>= 0.5.2)
     httpclient (2.8.0)
     i18n (0.7.0)
     json (2.0.2)
@@ -36,6 +39,7 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.9.1)
     multi_json (1.12.1)
+    multi_xml (0.6.0)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     nokogiri (1.6.8)
@@ -72,6 +76,10 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
+    url_expander (0.1.5)
+      hpricot
+      httparty (>= 0.6.1)
+      json
     webrobots (0.1.2)
     weighted_randomizer (0.1.2)
 
@@ -91,10 +99,11 @@ DEPENDENCIES
   sinatra
   sinatra-contrib
   thin (~> 1.6, >= 1.6.3)
+  url_expander
   weighted_randomizer
 
 RUBY VERSION
-   ruby 2.3.1p112
+   ruby 2.4.3p205
 
 BUNDLED WITH
-   1.12.5
+   1.16.1

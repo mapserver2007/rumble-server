@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-require 'sys/proctable'
 require 'yaml'
 
 config_files = [
