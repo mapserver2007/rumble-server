@@ -32,7 +32,7 @@ task :heroku_env_clean do
 end
 
 task :heroku_create do
-  sh "heroku create --stack cedar-14 rumble-server"
+  sh "heroku create --stack heroku-18 rumble-server"
 end
 
 task :timezone do
