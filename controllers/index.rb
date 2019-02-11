@@ -1,5 +1,15 @@
 require 'sinatra/json'
 
+before do
+  headers 'Access-Control-Allow-Origin' => '*'
+  headers 'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept'
+end
+
+get '/images/:name' do
+  images = Images.new
+  json(images.get_images(params[:name]))
+end
+
 post '/callback' do
   signature = request.env['HTTP_X_LINE_SIGNATURE']
   messaging = Messaging.new(signature)

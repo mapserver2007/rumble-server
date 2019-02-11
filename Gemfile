@@ -15,3 +15,4 @@ gem 'mechanize'
 gem 'parallel'
 gem 'url_expander'
 gem "nokogiri", ">= 1.8.5"
+gem 'mongo'
