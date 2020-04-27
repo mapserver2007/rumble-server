@@ -42,8 +42,6 @@ class Config
   end
 
   def self.[](key)
-    p key
-    p conf
     conf[key]
   end
 
