@@ -18,7 +18,7 @@ class Images
       data['images'].each do |image|
         images << {url: image['url'], text: image['text'] }
       end
-    end
+    end unless query.empty?
 
     images
   end
