@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.6.3'
 gem 'foreman'
 gem "rack", ">= 2.0.6"
-gem 'sinatra', '~> 2.0'
+gem 'sinatra', '~> 2.2'
 gem 'thin', '~> 1.7'
 gem 'sinatra-contrib'
 gem 'json'
